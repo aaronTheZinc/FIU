@@ -1,0 +1,35 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: dXUrZEcVrYqn3j7wGAYAEveJGAy4LdZ3Tk2NX6r3YyBMTbuXNVpA4G3MerXpnaLV
+      POSTGRES_USER: fiu-admin
+      POSTGRES_DB: fiu-db
+      volumes:
+        - ../../pgdata:/var/lib/postgresql/data
+        ports:
+      - "5432:5432"
+     
+  web:
+    image: fiu-website
+    environment:
+      - DB_NAME=fiu-db
+      - DB_HOST=db
+      - DB_USERNAME=downtown-admin
+      - DB_PASSWORD=dXUrZEcVrYqn3j7wGAYAEveJGAy4LdZ3Tk2NX6r3YyBMTbuXNVpA4G3MerXpnaLV
+      depends_on:
+      - db
+      restart: always
+    ports:
+      - "3000:6000"
+
+    server:
+        image: fiu-server
+      - DB_NAME=fiu-db
+      - DB_HOST=db
+      - DB_USERNAME=downtown-admin
+      - DB_PASSWORD=dXUrZEcVrYqn3j7wGAYAEveJGAy4LdZ3Tk2NX6r3YyBMTbuXNVpA4G3MerXpnaLV
+      depends_on:
+      - db
+      restart: always
